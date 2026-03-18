@@ -36,15 +36,16 @@ textarea {
     font-size: 14px;
 }
 
-/* BUTTON ROW */
+/* BUTTONS */
 .buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 15px;
+    flex-wrap: wrap;
 }
 
-/* 🔥 PROFI BUTTON */
+/* BUTTON STYLE */
 .btn {
     display: inline-flex;
     justify-content: center;
@@ -62,20 +63,16 @@ textarea {
 
     border: none;
     cursor: pointer;
-
     transition: all 0.2s ease;
 }
 
-/* 🔥 HOVER + GLOW */
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 0 12px rgba(56,189,248,0.5);
 }
 
-/* CLICK EFFECT */
 .btn:active {
     transform: translateY(0);
-    box-shadow: 0 0 6px rgba(56,189,248,0.3);
 }
 
 /* STATUS */
@@ -96,15 +93,20 @@ textarea {
     
     <div class="buttons">
         <button class="btn" onclick="save()">Save</button>
+        <button class="btn" onclick="exportNotes()">Export</button>
+        <button class="btn" onclick="importNotes()">Import</button>
         <a href="index.html" class="btn">Back</a>
     </div>
 
     <div class="status" id="status"></div>
 </div>
 
+<input type="file" id="fileInput" style="display:none" />
+
 <script>
 const textarea = document.getElementById("notes");
 const status = document.getElementById("status");
+const fileInput = document.getElementById("fileInput");
 
 // load
 textarea.value = localStorage.getItem("notes") || "";
@@ -112,24 +114,54 @@ textarea.value = localStorage.getItem("notes") || "";
 // save
 function save() {
     localStorage.setItem("notes", textarea.value);
-    status.innerText = "Saved ✓";
-
-    setTimeout(() => {
-        status.innerText = "";
-    }, 1000);
+    showStatus("Saved ✓");
 }
 
-// AUTO SAVE
+// auto-save
 textarea.addEventListener("input", () => {
     localStorage.setItem("notes", textarea.value);
 });
 
-// CTRL + ENTER SAVE
+// ctrl + enter
 textarea.addEventListener("keydown", (e) => {
     if (e.ctrlKey && e.key === "Enter") {
         save();
     }
 });
+
+// export
+function exportNotes() {
+    const blob = new Blob([textarea.value], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "notes.txt";
+    link.click();
+    showStatus("Exported ✓");
+}
+
+// import
+function importNotes() {
+    fileInput.click();
+}
+
+fileInput.addEventListener("change", function() {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        textarea.value = e.target.result;
+        localStorage.setItem("notes", textarea.value);
+        showStatus("Imported ✓");
+    };
+    reader.readAsText(file);
+});
+
+// status helper
+function showStatus(text) {
+    status.innerText = text;
+    setTimeout(() => status.innerText = "", 1500);
+}
 </script>
 
 </body>
