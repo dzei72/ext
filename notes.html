@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Poznámky</title>
+
+<style>
+body {
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 400px;
+    background: #020617;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background: #38bdf8;
+    border: none;
+    border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📝 Moje poznámky</h1>
+
+<textarea id="notes"></textarea>
+<br>
+<button onclick="save()">Uložit</button>
+
+<script>
+const textarea = document.getElementById("notes");
+
+// načtení
+textarea.value = localStorage.getItem("notes") || "";
+
+// uložení
+function save() {
+    localStorage.setItem("notes", textarea.value);
+    alert("Uloženo");
+}
+</script>
+
+</body>
+</html>
