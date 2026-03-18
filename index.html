@@ -15,17 +15,18 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    padding: 60px 20px;
+    padding: 50px 20px 10px; /* 👈 menší mezera dole */
 }
 
 .hero h1 {
     font-size: 40px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .hero p {
     color: #94a3b8;
     font-size: 18px;
+    margin-bottom: 10px; /* 👈 menší mezera */
 }
 
 /* GRID */
@@ -33,7 +34,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
-    padding: 40px;
+    padding: 20px 40px 40px; /* 👈 menší top padding */
 }
 
 /* CARD */
@@ -75,20 +76,28 @@ body {
     width: fit-content;
 }
 
+/* NOTES SECTION */
+.notes-section {
+    text-align: center;
+    margin: 20px 0 40px;
+}
+
+.notes-btn {
+    display: inline-block;
+    padding: 14px 22px;
+    background: #38bdf8;
+    color: black;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
 /* FOOTER */
 .footer {
     text-align: center;
-    padding: 30px 20px;
+    padding: 20px;
     color: #64748b;
-    border-top: 1px solid #1e293b;
-}
-
-.footer a {
-    display: block;
-    color: #38bdf8;
-    text-decoration: none;
-    margin-bottom: 10px;
-    font-weight: bold;
 }
 </style>
 </head>
@@ -104,7 +113,6 @@ body {
 <!-- EXTENSIONS -->
 <div class="container">
 
-<!-- Measure It -->
 <div class="card">
     <img src="measure.jpg">
     <div class="title">Measure It</div>
@@ -113,7 +121,6 @@ body {
     </a>
 </div>
 
-<!-- Maze Offline -->
 <div class="card">
     <img src="maze.jpg">
     <div class="title">Maze Offline</div>
@@ -122,7 +129,6 @@ body {
     </a>
 </div>
 
-<!-- Speak It -->
 <div class="card">
     <img src="speaktestto.jpg">
     <div class="title">Speak It: Text to Speech & Read Aloud</div>
@@ -133,9 +139,13 @@ body {
 
 </div>
 
+<!-- NOTES (nově pod kartami) -->
+<div class="notes-section">
+    <a href="notes.html" class="notes-btn">📝 Open Notes</a>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
-    <a href="notes.html">📝 Notes</a>
     © 2026 Dzei – Chrome Extensions
 </div>
 
