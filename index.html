@@ -28,17 +28,6 @@ body {
     font-size: 18px;
 }
 
-.hero a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 20px;
-    background: #38bdf8;
-    color: black;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
 /* GRID */
 .container {
     display: grid;
@@ -61,7 +50,6 @@ body {
     border-color: #38bdf8;
 }
 
-/* obrázek bez ořezu */
 .card img {
     width: 50%;
     height: auto;
@@ -72,7 +60,6 @@ body {
 
 .title {
     font-size: 20px;
-    margin-top: 10px;
     text-align: center;
 }
 
@@ -88,22 +75,20 @@ body {
     width: fit-content;
 }
 
-/* NAV */
-nav {
-    text-align: center;
-    margin-top: 10px;
-}
-
-nav a {
-    color: #38bdf8;
-    text-decoration: none;
-}
-
 /* FOOTER */
 .footer {
     text-align: center;
-    padding: 30px;
+    padding: 30px 20px;
     color: #64748b;
+    border-top: 1px solid #1e293b;
+}
+
+.footer a {
+    display: block;
+    color: #38bdf8;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -112,24 +97,17 @@ nav a {
 
 <!-- HERO -->
 <div class="hero">
-    <h1>🚀 Chrome Extensions</h1>
+    <h1>🚀 My Chrome Extensions</h1>
     <p>Useful tools that improve your browsing experience</p>
-    <a href="#apps">Explore Extensions</a>
 </div>
 
-<nav>
-    <a href="notes.html">📝 Notes</a>
-</nav>
-
 <!-- EXTENSIONS -->
-<div class="container" id="apps">
+<div class="container">
 
 <!-- Measure It -->
 <div class="card">
     <img src="measure.jpg">
-    <div class="title">
-        Measure It
-    </div>
+    <div class="title">Measure It</div>
     <a class="button" href="https://chromewebstore.google.com/detail/measure-it/nmcjbbgkamfkamnicjkchlhehnneadcj" target="_blank">
         Open in Web Store
     </a>
@@ -138,9 +116,7 @@ nav a {
 <!-- Maze Offline -->
 <div class="card">
     <img src="maze.jpg">
-    <div class="title">
-        Maze Offline
-    </div>
+    <div class="title">Maze Offline</div>
     <a class="button" href="https://chromewebstore.google.com/detail/maze-offline/ebkpcjbhoflpegahkjocpeagdjdeemem" target="_blank">
         Open in Web Store
     </a>
@@ -149,9 +125,7 @@ nav a {
 <!-- Speak It -->
 <div class="card">
     <img src="speaktestto.jpg">
-    <div class="title">
-        Speak It: Text to Speech & Read Aloud
-    </div>
+    <div class="title">Speak It: Text to Speech & Read Aloud</div>
     <a class="button" href="https://chromewebstore.google.com/detail/speak-it-text-to-speech-r/fbkabaeabkgadjmodpgfpkidnhceankd" target="_blank">
         Open in Web Store
     </a>
@@ -161,6 +135,7 @@ nav a {
 
 <!-- FOOTER -->
 <div class="footer">
+    <a href="notes.html">📝 Notes</a>
     © 2026 Dzei – Chrome Extensions
 </div>
 
