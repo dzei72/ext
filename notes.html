@@ -14,44 +14,14 @@ body {
 
 h1 {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
-/* LAYOUT */
-.wrapper {
-    display: flex;
-    max-width: 1100px;
-    margin: 20px auto;
-    gap: 20px;
-}
-
-/* SIDEBAR */
-.sidebar {
-    width: 250px;
-    background: #020617;
-    border: 1px solid #1e293b;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.note-item {
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.note-item:hover {
-    background: #1e293b;
-}
-
-.active {
-    background: #38bdf8;
-    color: black;
-}
-
-/* MAIN */
-.main {
-    flex: 1;
+/* CONTAINER */
+.container {
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 /* TEXTAREA */
@@ -63,6 +33,7 @@ textarea {
     border: 1px solid #1e293b;
     padding: 15px;
     border-radius: 10px;
+    font-size: 14px;
 }
 
 /* BUTTONS */
@@ -73,7 +44,9 @@ textarea {
     margin-top: 15px;
 }
 
+/* STEJNÝ DESIGN PRO OBA */
 .btn {
+    display: inline-block;
     padding: 12px 18px;
     background: #38bdf8;
     color: black;
@@ -82,6 +55,8 @@ textarea {
     font-weight: bold;
     border: none;
     cursor: pointer;
+    min-width: 120px;
+    text-align: center;
 }
 
 /* STATUS */
@@ -97,94 +72,45 @@ textarea {
 
 <h1>📝 Notes</h1>
 
-<div class="wrapper">
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <button class="btn" onclick="addNote()">+ New</button>
-        <div id="list"></div>
+<div class="container">
+    <textarea id="notes" placeholder="Write your notes here..."></textarea>
+    
+    <div class="buttons">
+        <button class="btn" onclick="save()">Save</button>
+        <a href="index.html" class="btn">Back</a>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
-        <textarea id="notes"></textarea>
-
-        <div class="buttons">
-            <button class="btn" onclick="save()">Save</button>
-            <a href="index.html" class="btn">Back</a>
-        </div>
-
-        <div class="status" id="status"></div>
-    </div>
-
+    <div class="status" id="status"></div>
 </div>
 
 <script>
-let notes = JSON.parse(localStorage.getItem("notes_app")) || [];
-let current = 0;
-
 const textarea = document.getElementById("notes");
-const list = document.getElementById("list");
 const status = document.getElementById("status");
 
-/* RENDER LIST */
-function renderList() {
-    list.innerHTML = "";
-    notes.forEach((n, i) => {
-        const div = document.createElement("div");
-        div.className = "note-item " + (i === current ? "active" : "");
-        div.innerText = n.title || "Note " + (i + 1);
-        div.onclick = () => select(i);
-        list.appendChild(div);
-    });
-}
+// load
+textarea.value = localStorage.getItem("notes") || "";
 
-/* SELECT NOTE */
-function select(i) {
-    save();
-    current = i;
-    textarea.value = notes[i].content;
-    renderList();
-}
-
-/* ADD NOTE */
-function addNote() {
-    notes.push({ title: "New note", content: "" });
-    current = notes.length - 1;
-    renderList();
-    textarea.value = "";
-}
-
-/* SAVE */
+// save
 function save() {
-    if (!notes[current]) return;
-    notes[current].content = textarea.value;
-    notes[current].title = textarea.value.split("\n")[0].slice(0,20);
-    localStorage.setItem("notes_app", JSON.stringify(notes));
-
+    localStorage.setItem("notes", textarea.value);
     status.innerText = "Saved ✓";
-    setTimeout(() => status.innerText = "", 1000);
+
+    setTimeout(() => {
+        status.innerText = "";
+    }, 1000);
 }
 
-/* AUTO SAVE */
+// AUTO SAVE
 textarea.addEventListener("input", () => {
-    save();
+    localStorage.setItem("notes", textarea.value);
 });
 
-/* CTRL + ENTER SAVE */
+// CTRL + ENTER SAVE
 textarea.addEventListener("keydown", (e) => {
     if (e.ctrlKey && e.key === "Enter") {
         save();
     }
 });
-
-/* INIT */
-if (notes.length === 0) {
-    notes.push({ title: "Note 1", content: "" });
-}
-
-textarea.value = notes[current].content;
-renderList();
 </script>
 
 </body>
