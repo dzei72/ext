@@ -4,39 +4,6 @@
 <meta charset="UTF-8">
 <title>Reviews</title>
 
-<body>
-
-<h1>⭐ Reviews</h1>
-
-<div class="container">
-
-    <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>
-            Very simple and effective text-to-speech extension. I use it daily to read articles and it works perfectly. The Alt+S shortcut is super useful.
-        </p>
-    </div>
-
-    <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>
-            Great read aloud tool for webpages. Easy to use, lightweight, and the voice selection works really well. Exactly what I was looking for.
-        </p>
-    </div>
-
-    <div class="review">
-        <div class="stars">★★★★★</div>
-        <p>
-            Clean and fast TTS extension with natural voices. The right-click option and keyboard shortcut make it very convenient to use. Highly
-        </p>
-    </div>
-
-</div>
-
-<a href="index.html" class="btn">Back</a>
-
-</body>    
-    
 <style>
 body {
     margin: 0;
@@ -45,21 +12,17 @@ body {
     color: white;
 }
 
-/* TITLE */
 h1 {
     text-align: center;
     margin-top: 40px;
-    font-size: 28px;
 }
 
-/* CONTAINER */
 .container {
     max-width: 800px;
     margin: 30px auto;
     padding: 0 20px;
 }
 
-/* REVIEW */
 .review {
     background: #020617;
     border: 1px solid #1e293b;
@@ -68,21 +31,11 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* STARS */
 .stars {
     color: #facc15;
-    font-size: 18px;
     margin-bottom: 10px;
 }
 
-/* TEXT */
-.review p {
-    margin: 0;
-    line-height: 1.6;
-    font-size: 15px;
-}
-
-/* BUTTON */
 .btn {
     display: block;
     width: 160px;
@@ -95,9 +48,52 @@ h1 {
     border-radius: 10px;
     text-decoration: none;
     font-weight: bold;
-    font-size: 16px;
 }
 </style>
 </head>
 
+<body>
+
+<!-- ===================== -->
+<!-- 🔥 PIŠ JEN TEXT SEM -->
+<!-- odděluj prázdným řádkem -->
+<!-- ===================== -->
+
+<textarea id="data" style="display:none;">
+
+Very simple and effective text-to-speech extension. I use it daily to read articles and it works perfectly. The Alt+S shortcut is super useful.
+
+Great read aloud tool for webpages. Easy to use, lightweight, and the voice selection works really well. Exactly what I was looking for.
+
+Clean and fast TTS extension with natural voices. The right-click option and keyboard shortcut make it very convenient to use.
+
+</textarea>
+
+<h1>⭐ Reviews</h1>
+
+<div class="container" id="app"></div>
+
+<a href="index.html" class="btn">Back</a>
+
+<script>
+const raw = document.getElementById("data").value.trim();
+
+const reviews = raw.split(/\n\s*\n/);
+
+const app = document.getElementById("app");
+
+reviews.forEach(text => {
+    const div = document.createElement("div");
+    div.className = "review";
+
+    div.innerHTML = `
+        <div class="stars">★★★★★</div>
+        <p>${text}</p>
+    `;
+
+    app.appendChild(div);
+});
+</script>
+
+</body>
 </html>
