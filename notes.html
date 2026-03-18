@@ -12,37 +12,49 @@ body {
     color: white;
 }
 
-/* HEADER */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-}
-
-/* BACK BUTTON */
-.back {
-    text-decoration: none;
-    background: #38bdf8;
-    color: black;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-/* TITLE */
 h1 {
     text-align: center;
     margin-top: 20px;
 }
 
-/* TEXTAREA */
-.container {
-    padding: 30px;
-    max-width: 900px;
-    margin: 0 auto;
+/* LAYOUT */
+.wrapper {
+    display: flex;
+    max-width: 1100px;
+    margin: 20px auto;
+    gap: 20px;
 }
 
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.note-item {
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.note-item:hover {
+    background: #1e293b;
+}
+
+.active {
+    background: #38bdf8;
+    color: black;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+}
+
+/* TEXTAREA */
 textarea {
     width: 100%;
     height: 400px;
@@ -51,26 +63,30 @@ textarea {
     border: 1px solid #1e293b;
     padding: 15px;
     border-radius: 10px;
-    font-size: 14px;
 }
 
-/* BUTTON */
-button {
+/* BUTTONS */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
     margin-top: 15px;
-    padding: 10px 16px;
-    background: #38bdf8;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
 }
 
-button:hover {
-    opacity: 0.9;
+.btn {
+    padding: 12px 18px;
+    background: #38bdf8;
+    color: black;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
 }
 
 /* STATUS */
 .status {
+    text-align: center;
     margin-top: 10px;
     color: #94a3b8;
 }
@@ -79,38 +95,96 @@ button:hover {
 
 <body>
 
-<div class="header">
-    <div></div>
-    <a href="index.html" class="back">⬅ Back</a>
-</div>
-
 <h1>📝 Notes</h1>
 
-<div class="container">
-    <textarea id="notes" placeholder="Write your notes here..."></textarea>
-    
-    <br>
-    <button onclick="save()">Save</button>
+<div class="wrapper">
 
-    <div class="status" id="status"></div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <button class="btn" onclick="addNote()">+ New</button>
+        <div id="list"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <textarea id="notes"></textarea>
+
+        <div class="buttons">
+            <button class="btn" onclick="save()">Save</button>
+            <a href="index.html" class="btn">Back</a>
+        </div>
+
+        <div class="status" id="status"></div>
+    </div>
+
 </div>
 
 <script>
+let notes = JSON.parse(localStorage.getItem("notes_app")) || [];
+let current = 0;
+
 const textarea = document.getElementById("notes");
+const list = document.getElementById("list");
 const status = document.getElementById("status");
 
-// load saved text
-textarea.value = localStorage.getItem("notes") || "";
-
-// save function
-function save() {
-    localStorage.setItem("notes", textarea.value);
-    status.innerText = "Saved ✓";
-    
-    setTimeout(() => {
-        status.innerText = "";
-    }, 2000);
+/* RENDER LIST */
+function renderList() {
+    list.innerHTML = "";
+    notes.forEach((n, i) => {
+        const div = document.createElement("div");
+        div.className = "note-item " + (i === current ? "active" : "");
+        div.innerText = n.title || "Note " + (i + 1);
+        div.onclick = () => select(i);
+        list.appendChild(div);
+    });
 }
+
+/* SELECT NOTE */
+function select(i) {
+    save();
+    current = i;
+    textarea.value = notes[i].content;
+    renderList();
+}
+
+/* ADD NOTE */
+function addNote() {
+    notes.push({ title: "New note", content: "" });
+    current = notes.length - 1;
+    renderList();
+    textarea.value = "";
+}
+
+/* SAVE */
+function save() {
+    if (!notes[current]) return;
+    notes[current].content = textarea.value;
+    notes[current].title = textarea.value.split("\n")[0].slice(0,20);
+    localStorage.setItem("notes_app", JSON.stringify(notes));
+
+    status.innerText = "Saved ✓";
+    setTimeout(() => status.innerText = "", 1000);
+}
+
+/* AUTO SAVE */
+textarea.addEventListener("input", () => {
+    save();
+});
+
+/* CTRL + ENTER SAVE */
+textarea.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "Enter") {
+        save();
+    }
+});
+
+/* INIT */
+if (notes.length === 0) {
+    notes.push({ title: "Note 1", content: "" });
+}
+
+textarea.value = notes[current].content;
+renderList();
 </script>
 
 </body>
