@@ -1,15 +1,46 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Poznámky</title>
+<title>Notes</title>
 
 <style>
 body {
-    background: #0f172a;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #020617, #0f172a);
     color: white;
-    font-family: Arial;
-    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+/* BACK BUTTON */
+.back {
+    text-decoration: none;
+    background: #38bdf8;
+    color: black;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* TITLE */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* TEXTAREA */
+.container {
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 textarea {
@@ -17,39 +48,68 @@ textarea {
     height: 400px;
     background: #020617;
     color: white;
-    border: none;
-    padding: 10px;
+    border: 1px solid #1e293b;
+    padding: 15px;
     border-radius: 10px;
+    font-size: 14px;
 }
 
+/* BUTTON */
 button {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 15px;
+    padding: 10px 16px;
     background: #38bdf8;
     border: none;
     border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* STATUS */
+.status {
+    margin-top: 10px;
+    color: #94a3b8;
 }
 </style>
 </head>
 
 <body>
 
-<h1>📝 Moje poznámky</h1>
+<div class="header">
+    <div></div>
+    <a href="index.html" class="back">⬅ Back</a>
+</div>
 
-<textarea id="notes"></textarea>
-<br>
-<button onclick="save()">Uložit</button>
+<h1>📝 Notes</h1>
+
+<div class="container">
+    <textarea id="notes" placeholder="Write your notes here..."></textarea>
+    
+    <br>
+    <button onclick="save()">Save</button>
+
+    <div class="status" id="status"></div>
+</div>
 
 <script>
 const textarea = document.getElementById("notes");
+const status = document.getElementById("status");
 
-// načtení
+// load saved text
 textarea.value = localStorage.getItem("notes") || "";
 
-// uložení
+// save function
 function save() {
     localStorage.setItem("notes", textarea.value);
-    alert("Uloženo");
+    status.innerText = "Saved ✓";
+    
+    setTimeout(() => {
+        status.innerText = "";
+    }, 2000);
 }
 </script>
 
