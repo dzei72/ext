@@ -15,7 +15,7 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    padding: 50px 20px 10px; /* 👈 menší mezera dole */
+    padding: 50px 20px 10px;
 }
 
 .hero h1 {
@@ -26,7 +26,7 @@ body {
 .hero p {
     color: #94a3b8;
     font-size: 18px;
-    margin-bottom: 10px; /* 👈 menší mezera */
+    margin-bottom: 10px;
 }
 
 /* GRID */
@@ -34,7 +34,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
-    padding: 20px 40px 40px; /* 👈 menší top padding */
+    padding: 20px 40px 40px;
 }
 
 /* CARD */
@@ -76,21 +76,39 @@ body {
     width: fit-content;
 }
 
-/* NOTES SECTION */
+/* NOTES LINK */
 .notes-section {
     text-align: center;
-    margin: 20px 0 40px;
+    margin: 10px 0 30px;
 }
 
-.notes-btn {
-    display: inline-block;
-    padding: 14px 22px;
-    background: #38bdf8;
-    color: black;
-    border-radius: 8px;
+.notes-link {
+    color: #38bdf8;
     text-decoration: none;
-    font-weight: bold;
     font-size: 16px;
+    font-weight: bold;
+    position: relative;
+}
+
+/* underline animace */
+.notes-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+    height: 2px;
+    background: #38bdf8;
+    transition: 0.3s;
+}
+
+/* hover efekt */
+.notes-link:hover::after {
+    width: 100%;
+}
+
+.notes-link:hover {
+    text-shadow: 0 0 6px rgba(56,189,248,0.6);
 }
 
 /* FOOTER */
@@ -139,9 +157,9 @@ body {
 
 </div>
 
-<!-- NOTES (nově pod kartami) -->
+<!-- NOTES (clean link) -->
 <div class="notes-section">
-    <a href="notes.html" class="notes-btn">📝 Open Notes</a>
+    <a href="notes.html" class="notes-link">📝 Notes</a>
 </div>
 
 <!-- FOOTER -->
