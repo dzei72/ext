@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <title>Notes</title>
 
+<!-- Firebase (správná verze) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
 <style>
 body {
     margin: 0;
@@ -42,7 +46,6 @@ textarea {
     justify-content: center;
     gap: 15px;
     margin-top: 15px;
-    flex-wrap: wrap;
 }
 
 /* BUTTON STYLE */
@@ -71,10 +74,6 @@ textarea {
     box-shadow: 0 0 12px rgba(56,189,248,0.5);
 }
 
-.btn:active {
-    transform: translateY(0);
-}
-
 /* STATUS */
 .status {
     text-align: center;
@@ -92,75 +91,51 @@ textarea {
     <textarea id="notes" placeholder="Write your notes here..."></textarea>
     
     <div class="buttons">
-        <button class="btn" onclick="save()">Save</button>
-        <button class="btn" onclick="exportNotes()">Export</button>
-        <button class="btn" onclick="importNotes()">Import</button>
         <a href="index.html" class="btn">Back</a>
     </div>
 
     <div class="status" id="status"></div>
 </div>
 
-<input type="file" id="fileInput" style="display:none" />
-
 <script>
+// 🔥 TVŮJ FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyBm6BLhe6WdeltxEaXqAvCDlvr_MYTf0c",
+  authDomain: "notes-dzeiext.firebaseapp.com",
+  projectId: "notes-dzeiext"
+};
+
+// init
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔑 ID z URL
+const params = new URLSearchParams(window.location.search);
+const noteId = params.get("id") || "default";
+
+// elements
 const textarea = document.getElementById("notes");
 const status = document.getElementById("status");
-const fileInput = document.getElementById("fileInput");
 
-// load
-textarea.value = localStorage.getItem("notes") || "";
-
-// save
-function save() {
-    localStorage.setItem("notes", textarea.value);
-    showStatus("Saved ✓");
-}
-
-// auto-save
-textarea.addEventListener("input", () => {
-    localStorage.setItem("notes", textarea.value);
-});
-
-// ctrl + enter
-textarea.addEventListener("keydown", (e) => {
-    if (e.ctrlKey && e.key === "Enter") {
-        save();
+// 🔄 realtime načítání
+db.collection("notes").doc(noteId).onSnapshot((doc) => {
+    if (doc.exists) {
+        textarea.value = doc.data().text || "";
     }
 });
 
-// export
-function exportNotes() {
-    const blob = new Blob([textarea.value], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "notes.txt";
-    link.click();
-    showStatus("Exported ✓");
-}
-
-// import
-function importNotes() {
-    fileInput.click();
-}
-
-fileInput.addEventListener("change", function() {
-    const file = fileInput.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        textarea.value = e.target.result;
-        localStorage.setItem("notes", textarea.value);
-        showStatus("Imported ✓");
-    };
-    reader.readAsText(file);
+// 💾 auto-save
+textarea.addEventListener("input", () => {
+    db.collection("notes").doc(noteId).set({
+        text: textarea.value
+    });
+    showStatus("Saved ✓");
 });
 
-// status helper
+// status
 function showStatus(text) {
     status.innerText = text;
-    setTimeout(() => status.innerText = "", 1500);
+    setTimeout(() => status.innerText = "", 1000);
 }
 </script>
 
